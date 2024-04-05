@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -15,12 +16,17 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity2_calculadora extends AppCompatActivity {
     private TextView textViewOperation;
     private TextView textViewResult;
     private StringBuilder currentNumber;
     private double operand1;
     private char operator;
+
+    private List<Double> listaResultados = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +51,27 @@ public class MainActivity2_calculadora extends AppCompatActivity {
         setClearButtonClickListener();
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_calculadora,menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        // Verifica si el ID del elemento del menú es el que deseas redirigir
+        if (id == R.id.menu_item_redireccion) {
+            // Aquí puedes iniciar la actividad que deseas abrir
+            Intent intent = new Intent(this, MainActivity2_historial.class);
+            intent.putExtra("LISTA_RESULTADOS", new ArrayList<>(listaResultados));
+            startActivity(intent);
+            return true; // Devuelve true para indicar que el evento ha sido manejado
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void setNumberButtonClickListeners() {
@@ -118,12 +141,13 @@ public class MainActivity2_calculadora extends AppCompatActivity {
                 double operando2 = Double.parseDouble(currentNumber.toString());
                 // Calcular el resultado utilizando el método calcularResultado
                 double resultado = calcularResultado(operand1, operando2, operator);
-                // Mostrar el resultado en el TextView
 
                 textViewResult.setText(String.valueOf(resultado));
                 textViewOperation.setText("0");
                 operand1= resultado;
                 currentNumber.setLength(0);
+
+                listaResultados.add(resultado);
 
             }
         });
@@ -141,10 +165,5 @@ public class MainActivity2_calculadora extends AppCompatActivity {
                 currentNumber.setLength(0);
             }
         });
-    }
-
-    public void irVentana4(View view) {
-        Intent intent = new Intent(this, MainActivity2_historial.class);
-        startActivity(intent);
     }
 }
