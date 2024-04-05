@@ -18,7 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class MainActivity extends AppCompatActivity {
 
 
-    private TextView textViewTeleMath;
+    private TextView textView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,10 +30,10 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        textViewTeleMath = findViewById(R.id.textViewTeleMath);
+        textView = findViewById(R.id.textViewTeleMath);
 
         // Registrar el menú contextual para el TextView
-        registerForContextMenu(textViewTeleMath);
+        registerForContextMenu(textView);
     }
 
     @Override
@@ -45,18 +45,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.color_blue) {
-            textViewTeleMath.setTextColor(Color.BLUE);
+
+        // Verifica si el ID del elemento del menú es el que deseas cambiar el color
+        if (id == R.id.menu_item_red) {
+            textView.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
             return true;
-        } else if (id == R.id.color_green) {
-            textViewTeleMath.setTextColor(Color.GREEN);
+        } else if (id == R.id.menu_item_blue) {
+            textView.setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
             return true;
-        } else if (id == R.id.color_red) {
-            textViewTeleMath.setTextColor(Color.RED);
+        } else if (id == R.id.menu_item_green) {
+            textView.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
             return true;
-        } else {
-            return super.onContextItemSelected(item);
         }
+
+        return super.onContextItemSelected(item);
     }
 
     public void irAVentana2(View view) {
